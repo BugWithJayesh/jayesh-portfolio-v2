@@ -1,8 +1,30 @@
 @import "tailwindcss";
 
+/* Core colors and design tokens */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #08090d;
+  --foreground: #f1f0f5;
+  --muted: #9694a3;
+  --accent: #a78bfa;
+  --surface: #12131a;
+  --border: rgba(255, 255, 255, 0.12);
+
+  --text-caption: 0.75rem;
+  --text-label: 1rem;
+  --text-body: 1.125rem;
+  --text-h3: 1.25rem;
+  --text-h2: 1.563rem;
+  --text-h1: 1.953rem;
+  --text-display: 3.052rem;
+  --text-hero: clamp(3.5rem, 10vw, 9rem);
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
 }
 
 @theme inline {
@@ -12,15 +34,315 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: #08090d;
+}
+
+/* Existing hero sculpture motion */
+.hero-sculpture {
+  animation: sculpture-float 5s ease-in-out infinite;
+}
+
+@keyframes sculpture-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate3d(0, -15px, 0) rotate(1deg);
+  }
+}
+
+/* Interactive liquid-glass card wrapper */
+.liquid-glass-shell {
+  --glass-pointer-x: 50%;
+  --glass-pointer-y: 24%;
+  --glass-scroll-shift: 0px;
+  --glass-scroll-y: 0%;
+
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  border-radius: inherit;
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 380ms ease;
+}
+
+.liquid-glass-shell:hover {
+  transform: translate3d(0, -3px, 0);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.14);
+}
+
+.liquid-glass-surface {
+  display: block;
+  width: 100%;
+  border-radius: inherit;
+}
+
+.liquid-glass-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-radius: inherit;
+}
+
+/* Soft pointer reflection. Kept intentionally dim for readable text. */
+.liquid-glass-pointer-light {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0.10;
+  transition: opacity 180ms ease;
+  background: radial-gradient(
+    210px circle at var(--glass-pointer-x) calc(var(--glass-pointer-y) + var(--glass-scroll-y)),
+    rgba(255, 255, 255, 0.075) 0%,
+    rgba(196, 181, 253, 0.035) 27%,
+    transparent 68%
+  );
+  mix-blend-mode: soft-light;
+}
+
+.liquid-glass-shell[data-pointer-active="true"] .liquid-glass-pointer-light {
+  opacity: 0.32;
+}
+
+/* One subtle inset contour only; the library already draws its outer rim. */
+.liquid-glass-inner-rim {
+  position: absolute;
+  z-index: 3;
+  inset: 6px;
+  border: 0;
+  border-radius: max(8px, calc(var(--glass-radius, 24px) - 7px));
+  pointer-events: none;
+  opacity: 0.52;
+  transform: translate3d(0, var(--glass-scroll-shift, 0px), 0);
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
+  background:
+    radial-gradient(
+      210px circle at var(--glass-pointer-x) calc(var(--glass-pointer-y) + var(--glass-scroll-y, 0%)),
+      rgba(255, 255, 255, 0.035) 0%,
+      rgba(167, 139, 250, 0.018) 34%,
+      transparent 72%
+    ),
+    linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0.018) 0%,
+      transparent 28%,
+      transparent 74%,
+      rgba(196, 181, 253, 0.012) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    inset 1px 0 0 rgba(255, 255, 255, 0.025),
+    inset -1px 0 0 rgba(255, 255, 255, 0.022),
+    inset 0 -1px 0 rgba(167, 139, 250, 0.025);
+  mix-blend-mode: soft-light;
+}
+
+/* Keep project artwork translucent so the glass remains visible over it. */
+.project-visual-python {
+  background: linear-gradient(
+    135deg,
+    rgba(76, 29, 149, 0.24),
+    rgba(23, 21, 34, 0.20) 52%,
+    rgba(12, 13, 19, 0.16)
+  );
+}
+
+.project-visual-milk {
+  background: linear-gradient(
+    135deg,
+    rgba(41, 32, 54, 0.24),
+    rgba(23, 21, 30, 0.19) 52%,
+    rgba(12, 13, 19, 0.15)
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-sculpture {
+    animation: none;
+  }
+
+  .liquid-glass-shell,
+  .liquid-glass-shell:hover {
+    transform: none;
+    transition: none;
+  }
+
+  .liquid-glass-inner-rim {
+    transform: none;
+    transition: none;
+  }
+}
+
+
+/* Project cards: stretch every wrapper in the same grid row. */
+#projects .project-cards-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+}
+
+#projects .project-card-cell {
+  display: flex;
+  align-self: stretch;
+  align-items: stretch;
+  min-width: 0;
+}
+
+#projects .project-card-glass {
+  display: flex;
+  flex: 1 1 auto;
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+}
+
+#projects .project-card-glass > .liquid-glass-surface {
+  display: flex !important;
+  flex: 1 1 auto;
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+}
+
+#projects .project-card-glass .liquid-glass-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+}
+
+#projects .project-card-article {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+}
+
+#projects .project-card-article > .project-visual {
+  flex: 0 0 240px;
+  width: 100%;
+}
+
+#projects .project-card-article > div:last-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  #projects .project-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  #projects .project-card-cell,
+  #projects .project-card-glass,
+  #projects .project-card-glass > .liquid-glass-surface,
+  #projects .project-card-glass .liquid-glass-content,
+  #projects .project-card-article {
+    min-height: 0;
+  }
+}
+/* Keep all skill glass cards equal in height */
+#skills .grid.gap-4 {
+  align-items: stretch;
+  grid-auto-rows: minmax(0, 1fr);
+}
+
+#skills .grid.gap-4 > .h-full {
+  display: flex;
+  align-self: stretch;
+  height: 100%;
+  min-width: 0;
+}
+
+#skills .grid.gap-4 .liquid-glass-shell {
+  display: flex;
+  flex: 1 1 auto;
+  align-self: stretch;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+}
+
+#skills .grid.gap-4 .liquid-glass-surface {
+  display: flex !important;
+  flex: 1 1 auto;
+  align-self: stretch;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+}
+
+#skills .grid.gap-4 .liquid-glass-content {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+#skills .grid.gap-4 .liquid-glass-content > .group {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+#skills .grid.gap-4 .liquid-glass-content > .group > div:last-child {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+/* Restore the floating hero sculpture */
+.hero-sculpture {
+  animation: sculpture-float 5s ease-in-out infinite;
+}
+
+@keyframes sculpture-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-15px) rotate(1deg);
+  }
 }
