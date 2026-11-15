@@ -1,11 +1,106 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────
+   Theme palette tokens
+   Each theme sets the same set of variables.
+   ──────────────────────────────────────────── */
+
+/* Purple (default) */
+:root,
+[data-theme="purple"] {
+  --accent:          #a78bfa;
+  --accent-light:    #c4b5fd;
+  --accent-mid:      #7c3aed;
+  --accent-dark:     #5b21b6;
+  --accent-glow:     rgba(139, 92, 246, 0.20);
+  --accent-glow-sm:  rgba(167, 139, 250, 0.15);
+  --accent-tint:     rgba(167, 139, 250, 0.07);
+  --accent-border:   rgba(167, 139, 250, 0.30);
+  --accent-bg:       rgba(167, 139, 250, 0.08);
+  --orb-from:        rgba(76, 29, 149, 0.24);
+  --orb-mid:         rgba(23, 21, 34, 0.20);
+  --orb-to:          rgba(12, 13, 19, 0.16);
+  --ambient-bg:      rgba(109, 40, 217, 0.20);
+  --ambient-contact: rgba(109, 40, 217, 0.20);
+}
+
+/* Cyan */
+[data-theme="cyan"] {
+  --accent:          #22d3ee;
+  --accent-light:    #67e8f9;
+  --accent-mid:      #0891b2;
+  --accent-dark:     #164e63;
+  --accent-glow:     rgba(6, 182, 212, 0.20);
+  --accent-glow-sm:  rgba(34, 211, 238, 0.15);
+  --accent-tint:     rgba(34, 211, 238, 0.07);
+  --accent-border:   rgba(34, 211, 238, 0.30);
+  --accent-bg:       rgba(34, 211, 238, 0.08);
+  --orb-from:        rgba(8, 145, 178, 0.24);
+  --orb-mid:         rgba(21, 23, 34, 0.20);
+  --orb-to:          rgba(12, 13, 19, 0.16);
+  --ambient-bg:      rgba(6, 182, 212, 0.20);
+  --ambient-contact: rgba(6, 182, 212, 0.20);
+}
+
+/* Emerald */
+[data-theme="emerald"] {
+  --accent:          #34d399;
+  --accent-light:    #6ee7b7;
+  --accent-mid:      #059669;
+  --accent-dark:     #064e3b;
+  --accent-glow:     rgba(5, 150, 105, 0.20);
+  --accent-glow-sm:  rgba(52, 211, 153, 0.15);
+  --accent-tint:     rgba(52, 211, 153, 0.07);
+  --accent-border:   rgba(52, 211, 153, 0.30);
+  --accent-bg:       rgba(52, 211, 153, 0.08);
+  --orb-from:        rgba(6, 95, 70, 0.24);
+  --orb-mid:         rgba(21, 34, 28, 0.20);
+  --orb-to:          rgba(12, 13, 19, 0.16);
+  --ambient-bg:      rgba(5, 150, 105, 0.20);
+  --ambient-contact: rgba(5, 150, 105, 0.20);
+}
+
+/* Rose */
+[data-theme="rose"] {
+  --accent:          #fb7185;
+  --accent-light:    #fda4af;
+  --accent-mid:      #e11d48;
+  --accent-dark:     #881337;
+  --accent-glow:     rgba(225, 29, 72, 0.20);
+  --accent-glow-sm:  rgba(251, 113, 133, 0.15);
+  --accent-tint:     rgba(251, 113, 133, 0.07);
+  --accent-border:   rgba(251, 113, 133, 0.30);
+  --accent-bg:       rgba(251, 113, 133, 0.08);
+  --orb-from:        rgba(136, 19, 55, 0.24);
+  --orb-mid:         rgba(34, 21, 25, 0.20);
+  --orb-to:          rgba(12, 13, 19, 0.16);
+  --ambient-bg:      rgba(225, 29, 72, 0.20);
+  --ambient-contact: rgba(225, 29, 72, 0.20);
+}
+
+/* Amber */
+[data-theme="amber"] {
+  --accent:          #fbbf24;
+  --accent-light:    #fcd34d;
+  --accent-mid:      #d97706;
+  --accent-dark:     #78350f;
+  --accent-glow:     rgba(217, 119, 6, 0.20);
+  --accent-glow-sm:  rgba(251, 191, 36, 0.15);
+  --accent-tint:     rgba(251, 191, 36, 0.07);
+  --accent-border:   rgba(251, 191, 36, 0.30);
+  --accent-bg:       rgba(251, 191, 36, 0.08);
+  --orb-from:        rgba(120, 53, 15, 0.24);
+  --orb-mid:         rgba(34, 28, 21, 0.20);
+  --orb-to:          rgba(12, 13, 19, 0.16);
+  --ambient-bg:      rgba(217, 119, 6, 0.20);
+  --ambient-contact: rgba(217, 119, 6, 0.20);
+}
+
 /* Core colors and design tokens */
 :root {
   --background: #08090d;
   --foreground: #f1f0f5;
   --muted: #9694a3;
-  --accent: #a78bfa;
   --surface: #12131a;
   --border: rgba(255, 255, 255, 0.12);
 
@@ -119,7 +214,7 @@ body {
   background: radial-gradient(
     210px circle at var(--glass-pointer-x) calc(var(--glass-pointer-y) + var(--glass-scroll-y)),
     rgba(255, 255, 255, 0.075) 0%,
-    rgba(196, 181, 253, 0.035) 27%,
+    var(--accent-tint, rgba(196, 181, 253, 0.035)) 27%,
     transparent 68%
   );
   mix-blend-mode: soft-light;
@@ -144,7 +239,7 @@ body {
     radial-gradient(
       210px circle at var(--glass-pointer-x) calc(var(--glass-pointer-y) + var(--glass-scroll-y, 0%)),
       rgba(255, 255, 255, 0.035) 0%,
-      rgba(167, 139, 250, 0.018) 34%,
+      var(--accent-tint, rgba(167, 139, 250, 0.018)) 34%,
       transparent 72%
     ),
     linear-gradient(
@@ -152,13 +247,13 @@ body {
       rgba(255, 255, 255, 0.018) 0%,
       transparent 28%,
       transparent 74%,
-      rgba(196, 181, 253, 0.012) 100%
+      var(--accent-tint, rgba(196, 181, 253, 0.012)) 100%
     );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.11),
     inset 1px 0 0 rgba(255, 255, 255, 0.025),
     inset -1px 0 0 rgba(255, 255, 255, 0.022),
-    inset 0 -1px 0 rgba(167, 139, 250, 0.025);
+    inset 0 -1px 0 var(--accent-tint, rgba(167, 139, 250, 0.025));
   mix-blend-mode: soft-light;
 }
 
@@ -166,19 +261,48 @@ body {
 .project-visual-python {
   background: linear-gradient(
     135deg,
-    rgba(76, 29, 149, 0.24),
-    rgba(23, 21, 34, 0.20) 52%,
-    rgba(12, 13, 19, 0.16)
+    var(--orb-from, rgba(76, 29, 149, 0.24)),
+    var(--orb-mid,  rgba(23, 21, 34, 0.20)) 52%,
+    var(--orb-to,   rgba(12, 13, 19, 0.16))
   );
 }
 
 .project-visual-milk {
   background: linear-gradient(
     135deg,
-    rgba(41, 32, 54, 0.24),
-    rgba(23, 21, 30, 0.19) 52%,
-    rgba(12, 13, 19, 0.15)
+    var(--orb-from, rgba(41, 32, 54, 0.24)),
+    var(--orb-mid,  rgba(23, 21, 30, 0.19)) 52%,
+    var(--orb-to,   rgba(12, 13, 19, 0.15))
   );
+}
+
+/* ─────────────────────────────────────────────
+   Accent-variable hover utilities
+   Used by server-rendered page.tsx so no event
+   handlers are needed.
+   ──────────────────────────────────────────── */
+
+/* Nav links */
+.nav-link:hover {
+  color: var(--accent-light);
+}
+
+/* Section headings inside project cards */
+.project-card-title:hover,
+.project-card-article:hover .project-card-title {
+  color: var(--accent-light);
+}
+
+/* Ghost contact buttons */
+.contact-link:hover {
+  border-color: var(--accent-border) !important;
+  background: var(--accent-bg) !important;
+  color: white !important;
+}
+
+/* Inline email link */
+.accent-link:hover {
+  color: var(--accent-light);
 }
 
 @media (prefers-reduced-motion: reduce) {
