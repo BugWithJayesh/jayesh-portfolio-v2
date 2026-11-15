@@ -23,13 +23,16 @@ export const metadata: Metadata = {
     },
 };
 
-/* Inline script run before any paint to restore the saved theme without flash */
+/* Inline script: runs before first paint, writes data-theme to <body>.
+   Targeting body (not html) means React never owns this attribute,
+   so there is no hydration mismatch when localStorage differs from the
+   server-rendered default. */
 const themeScript = `
 (function(){
   var VALID = ["purple","cyan","emerald","rose","amber"];
   var saved;
   try { saved = localStorage.getItem("jb-portfolio-theme"); } catch(e){}
-  document.documentElement.dataset.theme = (VALID.indexOf(saved) !== -1) ? saved : "purple";
+  document.body.dataset.theme = (VALID.indexOf(saved) !== -1) ? saved : "purple";
 })();
 `.trim();
 
@@ -37,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-theme="purple"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       {/* dangerouslySetInnerHTML is intentional here: this tiny script must

@@ -35,6 +35,7 @@ export default function Home() {
           <a href="#skills"   className="nav-link transition-colors">Skills</a>
           <a href="#projects" className="nav-link transition-colors">Projects</a>
           <a href="#contact"  className="nav-link transition-colors">Contact</a>
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="nav-link transition-colors">Resume</a>
         </nav>
 
         <div className="flex items-center gap-2 text-xs text-white/70">
