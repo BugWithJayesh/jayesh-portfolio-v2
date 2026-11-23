@@ -1,8 +1,59 @@
-import InteractiveLiquidGlass from "./components/InteractiveLiquidGlass";
+import Antigravity from "./components/Antigravity";
+import "./components/Antigravity.css";
+
+// Lightweight low-end device detection using native browser APIs (no libraries).
+// Reduces WebGL load on mobile / low-performance devices while preserving
+// the desktop visual appearance exactly.
+const isLowEndDevice = () => {
+  if (typeof window === 'undefined') return false;
+  const { hardwareConcurrency, deviceMemory } = navigator as Navigator & {
+    hardwareConcurrency?: number;
+    deviceMemory?: number;
+  };
+  const lowCpu = typeof hardwareConcurrency === 'number' && hardwareConcurrency <= 4;
+  const lowRam = typeof deviceMemory === 'number' && deviceMemory <= 4;
+  const smallScreen = window.matchMedia('(max-width: 768px)').matches;
+  return (lowCpu || lowRam) && smallScreen;
+};
+
+const lowEnd = isLowEndDevice();
 
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#08090d] text-[#f1f0f5]">
+      {/* Full-page Antigravity background */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" style={{ width: '100vw', height: '100vh' }}>
+        <Antigravity
+          className="antigravity"
+          style={{ width: '100%', height: '100%' }}
+          colors={["#8300ff", "#00daff", "#2fffba", "#ff0000", "#ffcd31"]}
+          colorMode="conic"
+          particleShape="box"
+          colorSpeed={0.12}
+          count={lowEnd ? 700 : 1550}
+          particleSize={lowEnd ? 0.3 : 0.35}
+          particleVariance={1}
+          magnetRadius={9.5}
+          ringRadius={4.5}
+          fieldStrength={8.5}
+          waveAmplitude={1}
+          waveCount={1}
+          waveSpeed={0.35}
+          rotationSpeed={-1.3}
+          pulseSpeed={1.4}
+          depthFactor={0.45}
+          ambient={lowEnd ? 0.08 : 0.10}
+          opacity={0.95}
+          lerpSpeed={0.02}
+          maxDevicePixelRatio={lowEnd ? 1 : 2}
+          autoAnimate
+          interactive
+          clickBurst
+          intro
+          lightMode
+        />
+      </div>
+
       {/* Background grid */}
       <div
         aria-hidden="true"
@@ -58,6 +109,7 @@ export default function Home() {
           </p>
 
           <h1
+            aria-label="Jayesh Bairagi — Computer Science Student"
             className="font-semibold uppercase leading-[0.82] tracking-[-0.075em]"
             style={{ fontSize: "clamp(4rem, 11vw, 10rem)" }}
           >
@@ -153,8 +205,7 @@ export default function Home() {
         className="relative z-10 border-t border-white/10 px-6 py-24 sm:px-10 lg:px-16"
       >
         <div className="mx-auto max-w-[1400px]">
-          <InteractiveLiquidGlass radius={30} tint="rgba(255,255,255,0.045)" className="w-full">
-            <div className="grid gap-12 p-6 sm:p-8 md:grid-cols-2 md:gap-20 lg:p-12">
+          <div className="grid gap-12 p-6 sm:p-8 md:grid-cols-2 md:gap-20 lg:p-12">
               <div>
                 <p
                   className="mb-5 text-xs tracking-[0.25em]"
@@ -205,7 +256,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </InteractiveLiquidGlass>
         </div>
       </section>
 
@@ -238,69 +288,63 @@ export default function Home() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {/* Programming */}
             <div className="h-full">
-              <InteractiveLiquidGlass radius={24} tint="rgba(255,255,255,0.045)" className="h-full w-full">
-                <div className="group p-6 sm:p-8">
-                  <p className="text-xs tracking-[0.18em] text-white/40">
-                    01 / PROGRAMMING
-                  </p>
-                  <h3 className="mt-8 text-2xl font-medium">C / C++</h3>
-                  <p className="mt-3 leading-7 text-white/50">
-                    Building programming fundamentals and practising problem-solving.
-                  </p>
-                  <div className="mt-8 flex flex-wrap gap-2">
-                    <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/70">C</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/70">C++</span>
-                  </div>
+              <div className="group p-6 sm:p-8">
+                <p className="text-xs tracking-[0.18em] text-white/40">
+                  01 / PROGRAMMING
+                </p>
+                <h3 className="mt-8 text-2xl font-medium">C / C++</h3>
+                <p className="mt-3 leading-7 text-white/50">
+                  Building programming fundamentals and practising problem-solving.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-2">
+                  <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/70">C</span>
+                  <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/70">C++</span>
                 </div>
-              </InteractiveLiquidGlass>
+              </div>
             </div>
 
             {/* Python – highlighted card */}
             <div className="h-full">
-              <InteractiveLiquidGlass radius={24} tint="rgba(255,255,255,0.045)" className="h-full w-full">
-                <div className="group p-6 sm:p-8">
-                  <p
-                    className="text-xs tracking-[0.18em]"
-                    style={{ color: "var(--accent-light)" }}
+              <div className="group p-6 sm:p-8">
+                <p
+                  className="text-xs tracking-[0.18em]"
+                  style={{ color: "var(--accent-light)" }}
+                >
+                  02 / CURRENTLY LEARNING
+                </p>
+                <h3 className="mt-8 text-2xl font-medium">Python</h3>
+                <p className="mt-3 leading-7 text-white/50">
+                  Exploring Python through small programs and beginner-friendly projects.
+                </p>
+                <div className="mt-8">
+                  <span
+                    className="rounded-full border px-3 py-1.5 text-xs"
+                    style={{
+                      borderColor: "var(--accent-border)",
+                      color: "var(--accent-light)",
+                    }}
                   >
-                    02 / CURRENTLY LEARNING
-                  </p>
-                  <h3 className="mt-8 text-2xl font-medium">Python</h3>
-                  <p className="mt-3 leading-7 text-white/50">
-                    Exploring Python through small programs and beginner-friendly projects.
-                  </p>
-                  <div className="mt-8">
-                    <span
-                      className="rounded-full border px-3 py-1.5 text-xs"
-                      style={{
-                        borderColor: "var(--accent-border)",
-                        color: "var(--accent-light)",
-                      }}
-                    >
-                      In progress
-                    </span>
-                  </div>
+                    In progress
+                  </span>
                 </div>
-              </InteractiveLiquidGlass>
+              </div>
             </div>
 
             {/* Web and data */}
             <div className="h-full">
-              <InteractiveLiquidGlass radius={24} tint="rgba(255,255,255,0.045)" className="h-full w-full">
-                <div className="group p-6 sm:p-8">
-                  <p className="text-xs tracking-[0.18em] text-white/40">
-                    03 / WEB & DATA
-                  </p>
-                  <h3 className="mt-8 text-2xl font-medium">HTML / SQL</h3>
-                  <p className="mt-3 leading-7 text-white/50">
-                    Learning web page structure and the basics of working with databases.
-                  </p>
-                  <div className="mt-8 flex flex-wrap gap-2">
-                    <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/70">HTML</span>
-                    <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/70">SQL</span>
-                  </div>
+              <div className="group p-6 sm:p-8">
+                <p className="text-xs tracking-[0.18em] text-white/40">
+                  03 / WEB & DATA
+                </p>
+                <h3 className="mt-8 text-2xl font-medium">HTML / SQL</h3>
+                <p className="mt-3 leading-7 text-white/50">
+                  Learning web page structure and the basics of working with databases.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-2">
+                  <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/70">HTML</span>
+                  <span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-white/70">SQL</span>
                 </div>
-              </InteractiveLiquidGlass>
+              </div>
             </div>
           </div>
         </div>
@@ -333,8 +377,7 @@ export default function Home() {
           <div className="project-cards-grid grid items-stretch gap-5 md:grid-cols-2">
             {/* Project 1 */}
             <div className="project-card-cell min-w-0">
-              <InteractiveLiquidGlass radius={24} tint="rgba(255,255,255,0.045)" className="project-card-glass h-full w-full">
-                <article className="project-card-article group relative flex h-full flex-col overflow-hidden rounded-2xl">
+              <article className="project-card-article group relative flex h-full flex-col overflow-hidden rounded-2xl">
                   <div className="project-visual project-visual-python relative flex h-[240px] shrink-0 items-center justify-center overflow-hidden rounded-t-[23px] p-8">
                     <div
                       className="absolute h-40 w-40 rounded-full border transition-transform duration-700 group-hover:scale-125"
@@ -374,14 +417,12 @@ export default function Home() {
                     </div>
                   </div>
                 </article>
-              </InteractiveLiquidGlass>
-            </div>
+              </div>
 
-            {/* Project 2 */}
+              {/* Project 2 */}
             <div className="project-card-cell min-w-0">
-              <InteractiveLiquidGlass radius={24} tint="rgba(255,255,255,0.045)" className="project-card-glass h-full w-full">
-                <article className="project-card-article group relative flex h-full flex-col overflow-hidden rounded-2xl">
-                  <div className="project-visual project-visual-milk relative flex h-[240px] shrink-0 items-center justify-center overflow-hidden rounded-t-[23px] p-8">
+              <article className="project-card-article group relative flex h-full flex-col overflow-hidden rounded-2xl">
+                <div className="project-visual project-visual-milk relative flex h-[240px] shrink-0 items-center justify-center overflow-hidden rounded-t-[23px] p-8">
                     <div className="absolute h-36 w-36 rounded-full border border-white/15 transition-transform duration-700 group-hover:scale-110" />
                     <div className="relative flex items-center gap-3 transition-transform duration-500 group-hover:scale-105">
                       <div
@@ -419,8 +460,7 @@ export default function Home() {
                     </div>
                   </div>
                 </article>
-              </InteractiveLiquidGlass>
-            </div>
+              </div>
           </div>
         </div>
       </section>
@@ -436,8 +476,7 @@ export default function Home() {
         />
 
         <div className="relative mx-auto max-w-[1200px]">
-          <InteractiveLiquidGlass radius={30} tint="rgba(255,255,255,0.045)" className="w-full">
-            <div className="p-6 sm:p-8 lg:p-12">
+          <div className="p-6 sm:p-8 lg:p-12">
               <p
                 className="mb-6 text-xs tracking-[0.25em]"
                 style={{ color: "var(--accent-light)" }}
@@ -504,7 +543,6 @@ export default function Home() {
                 </a>
               </p>
             </div>
-          </InteractiveLiquidGlass>
         </div>
       </section>
     </main>
